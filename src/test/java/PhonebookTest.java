@@ -27,8 +27,8 @@ class PhoneBookTest {
 
     public static Stream<Arguments> sourceAdd() {
         return Stream.of(
-                Arguments.of(2, "Ivan", "461379", "Olya", "461379"),
-                Arguments.of(1, "Ivan", "461379", "Ivan", "461379")
+                Arguments.of(2, "Вася", "+7(905) 968-12-25", "Петя", "+7(905) 978-12-25"),
+                Arguments.of(1, "Вася", "+7(905) 968-12-25", "Вася", "+7(905) 978-12-25")
         );
     }
 
@@ -38,4 +38,18 @@ class PhoneBookTest {
         phoneBook.add(name1, name2);
         Assertions.assertEquals(expected, phoneBook.add(name2, number2));
     }
-}
+
+    public static Stream<Arguments> sourceFind() {
+        return Stream.of(
+                Arguments.of("Вася", "Вася", "+7(905) 968-12-25", "Петя", "+7(905) 978-12-25"),
+                Arguments.of("Вася", "Вася", "+7(905) 968-12-25", "Вася", "+7(905) 978-12-25")
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("sourceFind")
+    void findByNumber(String expected, String name1, String number1, String name2, String number2){
+        phoneBook.add(name1, number1);
+        phoneBook.add(name2, number2);
+        Assertions.assertEquals(expected, phoneBook.findByNumber(number1));
+    }
